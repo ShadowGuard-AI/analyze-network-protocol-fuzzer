@@ -164,12 +164,16 @@ def fuzz(target_ip, target_port, protocol, num_packets, packet_size, delay, fuzz
         mutation_rate (float): The mutation rate for "mutate" fuzzing.
         overflow_amount (int): The overflow amount for "overflow" fuzzing.
     """
+    # Both lists and the socket start as empty or None before the try. They
+    # used to be created inside it, so a refused connection reached the
+    # finally block with nothing defined and the cleanup raised
+    # UnboundLocalError, hiding the real connection error.
+    packet_data = []  # List to store packet data for analysis
+    timestamps = []   # List to store timestamps for each packet
+    sock = None
     try:
         sock = create_socket(protocol)
         connect_socket(sock, target_ip, target_port, protocol)
-
-        packet_data = []  # List to store packet data for analysis
-        timestamps = []   # List to store timestamps for each packet
 
         for i in range(num_packets):
             try:
@@ -209,16 +213,24 @@ def fuzz(target_ip, target_port, protocol, num_packets, packet_size, delay, fuzz
 
     except Exception as e:
         logging.error(f"Fuzzing process failed: {e}")
+        # Re-raise setup failures (a refused connection, a socket that
+        # could not be created). Swallowing them here would let main print
+        # "Fuzzing complete" and exit 0 for a run that sent nothing.
+        # Per packet failures are already handled inside the loop above.
+        raise
 
     finally:
-        if protocol == "TCP":  # Only shutdown TCP sockets
-            try:
-                sock.shutdown(socket.SHUT_RDWR)
-            except OSError as e:
-                logging.warning(f"Error shutting down socket: {e}")
-        sock.close()
-        logging.info("Socket closed.")
-        return packet_data, timestamps
+        if sock is not None:
+            if protocol == "TCP":  # Only shutdown TCP sockets
+                try:
+                    sock.shutdown(socket.SHUT_RDWR)
+                except OSError as e:
+                    # A socket whose connect failed raises ENOTCONN here.
+                    # That is expected cleanup noise, not a second failure.
+                    logging.warning(f"Error shutting down socket: {e}")
+            sock.close()
+            logging.info("Socket closed.")
+    return packet_data, timestamps
 
 
 def analyze_and_report(packet_data, timestamps, report_file):
@@ -292,6 +304,10 @@ def main():
         logging.error("Delay must be a non-negative number.")
         sys.exit(1)
 
+    if args.overflow_amount < 0:
+        logging.error("Overflow amount must be a non-negative number of bytes.")
+        sys.exit(1)
+
     try:
         # Call the fuzzing function
         packet_data, timestamps = fuzz(args.target_ip, args.target_port, args.protocol, args.num_packets,
@@ -309,29 +325,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-"""
-Usage Examples:
-
-1.  Basic fuzzing of a TCP service on port 8080 with random packets:
-
-    python main.py -t 127.0.0.1 -p 8080 -n 100 -s 500 -P TCP
-
-2.  Fuzzing a UDP service with mutated packets and a report file:
-
-    python main.py -t 192.168.1.100 -p 53 -n 200 -s 256 -P UDP -f mutate -m 0.2 -r udp_fuzz_report.csv
-
-3.  Fuzzing with overflow packets and logging to a file:
-
-    python main.py -t example.com -p 21 -n 50 -s 100 -f overflow -o 2000 -l fuzz.log
-
-4.  Displaying help:
-
-    python main.py -h
-
-5. Running with a different delay and smaller packets
-
-    python main.py -t 127.0.0.1 -p 8000 -n 50 -s 64 -d 0.05 -P TCP
-
-"""
