@@ -1,3 +1,5 @@
+![Banner](banner.png)
+
 # analyze-network-protocol-fuzzer
 A command-line tool that fuzzes network protocols by generating and sending malformed packets to a target service to identify potential vulnerabilities or crashes. Supports configurable packet templates and protocol definitions. - Focused on Data analysis and reporting
 
