@@ -1,7 +1,7 @@
 ![Banner](banner.png)
 
 # analyze-network-protocol-fuzzer
-A command-line tool that fuzzes network protocols by generating and sending malformed packets to a target service to identify potential vulnerabilities or crashes. Supports configurable packet templates and protocol definitions. - Focused on Data analysis and reporting
+A command-line tool that fuzzes network protocols by generating and sending malformed packets to a target service to identify potential vulnerabilities or crashes. It sends random, mutated, or oversized random byte packets to a named target. - Focused on Data analysis and reporting
 
 ## Install
 `git clone https://github.com/ShadowGuardAI/analyze-network-protocol-fuzzer`
