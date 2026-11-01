@@ -173,11 +173,20 @@ def fuzz(target_ip, target_port, protocol, num_packets, packet_size, delay, fuzz
     sock = None
     try:
         sock = create_socket(protocol)
+        # No timeout is set on the socket anywhere, so a TCP connect
+        # to a filtered port waits on the operating system's own
+        # timeout, which can be minutes, before the setup failure
+        # below gets its chance to fire.
         connect_socket(sock, target_ip, target_port, protocol)
 
         for i in range(num_packets):
             try:
-                # Generate initial packet
+                # Every packet starts as fresh random bytes, including
+                # for mutate. There is no seed packet or valid protocol
+                # message anywhere in this tool, so mutate is random
+                # bytes randomised a second time, indistinguishable
+                # from the random type in what arrives at the target.
+                # Only overflow changes the shape, by length alone.
                 packet = generate_random_packet(packet_size)
 
                 # Apply fuzzing based on selected type
@@ -205,6 +214,13 @@ def fuzz(target_ip, target_port, protocol, num_packets, packet_size, delay, fuzz
 
             except socket.error as e:
                 logging.error(f"Error sending packet: {e}")
+                # Breaking here returns the partial data as a normal
+                # result, so main reports Fuzzing complete and exits 0.
+                # A target that crashes mid run, which is the outcome
+                # fuzzing exists to find, therefore looks like a
+                # finished run unless someone reads this log line. This
+                # tool also never reads a response, so a silent target
+                # and a healthy one produce the same report.
                 break  # Stop sending packets if an error occurs
 
             except Exception as e:
