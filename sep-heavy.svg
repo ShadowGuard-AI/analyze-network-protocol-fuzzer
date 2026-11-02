@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 44" role="img" aria-label="Major section divider: a label tag string across the width with five blank tags hanging at uneven intervals, the centre tag carrying a tag red spot">
+  <line x1="10" y1="8" x2="1190" y2="8" stroke="#c68a2c" stroke-width="3"/>
+  <g fill="#f0eadc" stroke="#beb49e">
+    <rect x="150" y="8" width="34" height="24"/><rect x="420" y="8" width="34" height="30"/><rect x="583" y="8" width="34" height="24"/><rect x="770" y="8" width="34" height="30"/><rect x="1000" y="8" width="34" height="24"/>
+  </g>
+  <circle cx="600" cy="22" r="4" fill="#b02620"/>
+</svg>
