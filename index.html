@@ -3,97 +3,78 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>analyze-network-protocol-fuzzer: The Butterfly Collector's Setting Board</title>
-<meta name="description" content="A command-line tool that fuzzes network protocols by generating and sending malformed packets to a target service to identify potential vulnerabilities or crashes.">
+<title>analyze-network-protocol-fuzzer: The Test Hall</title>
 <style>
-@font-face{font-family:'Averia Sans Libre';src:url('fonts/AveriaSansLibre.ttf') format('truetype');}
-@font-face{font-family:'Bitter';src:url('fonts/Bitter.ttf') format('truetype');}
-:root{--black:#181410;--bone:#f0eadc;--amber:#c68a2c;--red:#b02620}
-*{box-sizing:border-box}body{margin:0;background:var(--black);color:#e8e2d0;font-family:'Bitter',serif;line-height:1.65}
-h1,h2{font-family:'Averia Sans Libre',sans-serif}
-.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:2rem 6vw;max-width:1100px;margin:0 auto}
-.hero img.banner{width:100%;border:3px solid var(--amber)}
-.logo{width:170px}
-main{padding:0 6vw 3rem;max-width:1100px;margin:0 auto}
-nav{display:flex;gap:.8rem;flex-wrap:wrap;margin:1.2rem 0}
-.board{position:relative;display:inline-block;text-decoration:none;background:var(--bone);color:var(--black);font-family:'Averia Sans Libre',sans-serif;padding:.7rem 1.3rem .8rem;border:3px solid var(--amber);text-align:center}
-.board:before{content:'';position:absolute;left:0;right:0;top:50%;height:2px;background:rgba(24,20,16,.35)}
-.board i{position:relative;font-style:normal}
-.board:after{content:'';position:absolute;left:6px;right:6px;top:4px;height:9px;background:rgba(240,234,220,0);border-left:12px solid transparent;border-right:12px solid transparent;transition:background .15s}
-.board:hover:after{background:rgba(214,196,160,.95)}
-.board:active:after{background:rgba(188,164,120,.95)}
-.board:active:before{background:rgba(24,20,16,.7)}
-.board:focus-visible{outline:none;box-shadow:-8px -8px 0 -4px var(--red)}
-.drawer{background:var(--bone);color:var(--black);border:5px solid #060505;padding:.5rem 1.5rem 1.2rem;margin:1.8rem 0;box-shadow:inset 0 0 0 2px var(--amber)}
-.drawer h2{border-bottom:2px solid var(--amber);padding-bottom:.3rem}
-.drawer p{border-bottom:1px solid rgba(24,20,16,.18);padding-bottom:.45rem}
-.drawer p:last-child{border-bottom:none}
-pre{background:var(--black);color:var(--bone);padding:1rem;overflow-x:auto}
-code{background:rgba(198,138,44,.2);padding:0 .25em}pre code{background:none;padding:0}
-a{color:#e9bd6d}
-a.pin{position:relative;padding-left:1em}
-a.pin:before{content:'';position:absolute;left:3px;top:.1em;width:2px;height:1em;background:#cfc8b4;transition:transform .15s}
-a.pin:after{content:'';position:absolute;left:0;top:0;width:7px;height:7px;border-radius:50%;background:#0c0c0c;transition:background .15s}
-a.pin:hover:before{transform:rotate(7deg)}
-a.pin:hover:after{background:var(--red)}
-.tagstring{position:relative;height:40px;margin:2rem 0;border-top:3px solid var(--amber)}
-.tagstring i{position:absolute;top:0;width:30px;height:22px;background:var(--bone);border:1px solid #beb49e}
-.tagstring i:nth-child(1){left:16%}.tagstring i:nth-child(2){left:48%;height:27px}.tagstring i:nth-child(3){left:79%}
-.tagstring i:nth-child(2):after{content:'';position:absolute;left:11px;top:9px;width:7px;height:7px;border-radius:50%;background:var(--red)}
-.torn{background:var(--bone);border-left:5px solid var(--red);padding:.6rem 1rem}
-footer{padding:1rem 6vw 2.4rem;max-width:1100px;margin:0 auto}
+@font-face { font-family: 'Sigmar One'; src: url('fonts/SigmarOne-400.woff2') format('woff2'); font-weight: 400; }
+@font-face { font-family: 'Rubik'; src: url('fonts/Rubik-400.woff2') format('woff2'); font-weight: 400; }
+@font-face { font-family: 'Rubik'; src: url('fonts/Rubik-700.woff2') format('woff2'); font-weight: 700; }
+:root { --lab: #f4f5f6; --concrete: #6d7278; --dummy: #3c4043; --orange: #e07b1f; --paper: #f7f7f8; --ink: #222426; }
+* { box-sizing: border-box; }
+body { margin: 0; font-family: 'Rubik', sans-serif; background: var(--paper); color: var(--ink); line-height: 1.6; }
+header.top { display: flex; justify-content: space-between; align-items: center; padding: 16px 28px; background: var(--dummy); color: var(--lab); border-bottom: 5px solid var(--orange); }
+.wordmark { font-weight: 700; letter-spacing: .03em; }
+.impact { color: #f2c193; font-size: .85rem; letter-spacing: .12em; text-transform: uppercase; }
+.hero { text-align: center; padding: 50px 22px 8px; }
+.hero img.logo { width: 180px; height: auto; border: 5px solid var(--dummy); border-radius: 6px; }
+h1 { font-family: 'Sigmar One', sans-serif; font-weight: 400; font-size: 2.5rem; margin: 18px 0 6px; color: var(--dummy); }
+h2 { font-family: 'Sigmar One', sans-serif; font-weight: 400; color: var(--dummy); border-bottom: 3px solid #d4d7da; padding-bottom: 5px; margin-top: 38px; }
+.tag { max-width: 43rem; margin: 0 auto; }
+.buttons { margin: 22px 0 6px; }
+.buttons a { display: inline-block; margin: 4px; padding: 11px 22px; background: var(--concrete); color: #fff; font-weight: 700; text-decoration: none; border-radius: 4px; }
+.buttons a.alt { background: transparent; color: var(--dummy); border: 2px solid var(--dummy); }
+figure.wide { max-width: 1020px; margin: 24px auto; padding: 0 18px; }
+figure.wide img { width: 100%; height: auto; display: block; border: 1px solid #d4d7da; }
+figcaption { color: #71767c; font-size: .9rem; padding-top: 8px; text-align: center; }
+.strip { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; padding: 20px 18px; }
+.strip div { background: #fff; border: 1px solid #d4d7da; border-top: 4px solid var(--orange); padding: 13px 18px; min-width: 180px; text-align: center; }
+.strip b { display: block; font-family: 'Sigmar One', sans-serif; font-weight: 400; color: var(--dummy); font-size: 1.05rem; }
+main { max-width: 880px; margin: 0 auto; padding: 8px 22px 30px; }
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid #d4d7da; padding: 8px 12px; text-align: left; vertical-align: top; }
+th { background: var(--dummy); color: var(--lab); }
+code { background: #e2e4e7; padding: 1px 6px; border-radius: 3px; }
+.hold { border-left: 5px solid var(--orange); background: #f9ecdc; padding: 13px 18px; }
+footer { text-align: center; padding: 24px 18px 32px; color: #71767c; font-size: .9rem; border-top: 5px solid var(--orange); margin-top: 28px; }
 </style>
 </head>
 <body>
-<header class="hero">
-<img class="logo" src="assets/logo.png" alt="A setting board seen from above: one butterfly held open by paper strips pinned at its wing tips, amber wings with cabinet black margins and a tag red spot at each hindwing base">
-<img class="banner" src="assets/intro-banner.png" alt="A collectors bench at dawn: a setting board with one butterfly pinned flat, a pin row in cork, forceps on a cloth, blank tags, and a half open glass topped drawer, with nothing that can be read">
-<h1>analyze-network-protocol-fuzzer</h1>
-<p>A collectors cabinet of drawers. Each topic is filed in its own drawer, opened in order from the top of the cabinet down.</p>
-<nav>
-<a class="board" href="#c-t"><i>Target</i></a>
-<a class="board" href="#c-p"><i>Port</i></a>
-<a class="board" href="#c-n"><i>Number of Packets</i></a>
-<a class="board" href="#c-s"><i>Packet Size</i></a>
-<a class="board" href="#c-f"><i>Fuzzing Type</i></a>
-<a class="board" href="#c-l"><i>Log File</i></a>
-</nav>
-</header>
+<header class="top"><span class="wordmark">analyze-network-protocol-fuzzer</span><span class="impact">The damage is the data</span></header>
+<section class="hero">
+<img class="logo" src="assets/logo.png" alt="Front view of a plain white test car drawn as a flat emblem with bold outlines, a grey test dummy belted behind its windscreen and one round orange impact sensor disc fixed at the centre of its front bumper">
+<h1>The Test Hall</h1>
+<p class="tag">A command-line tool that fuzzes network protocols by generating and sending malformed packets to a target service to identify potential vulnerabilities or crashes. It sends random, mutated, or oversized random byte packets to a named target. The crash test laboratory strikes its subject again and again with blows bent out of shape; this fuzzer does the same to a service, and the damage is the data.</p>
+<p class="buttons"><a href="https://github.com/ShadowGuard-AI/analyze-network-protocol-fuzzer">View on GitHub</a> <a class="alt" href="https://github.com/ShadowGuard-AI/analyze-network-protocol-fuzzer#readme">Read the README</a></p>
+</section>
+<figure class="wide"><img src="assets/intro-banner.png" alt="The white car's front corner close up a breath after impact, the bumper folded against the concrete barrier around the orange sensor disc while the rest of the car stands undamaged behind it"><figcaption>The front corner a breath after impact, the bumper folded around the orange disc.</figcaption></figure>
+<div class="strip">
+<div><b>Three types</b>random, mutate, overflow</div>
+<div><b>100 packets</b>the stated default count</div>
+<div><b>100 bytes</b>the stated default size</div>
+<div><b>Named target</b>host and port</div>
+</div>
 <main>
-<section class="drawer" id="purpose"><h2>Top drawer: what the tool does</h2>
-<p>analyze-network-protocol-fuzzer is a command-line tool that fuzzes network protocols by generating and sending malformed packets to a target service to identify potential vulnerabilities or crashes. It sends random, mutated, or oversized random byte packets to a named target, and its heading line places it under data analysis and reporting.</p>
-<p>Printed on this drawer card itself: the README names no protocols that the tool covers, and this drawer adds no claim about which protocols they might be.</p>
-</section>
-<div class="tagstring"><i></i><i></i><i></i></div>
-<section class="drawer" id="install"><h2>Second drawer: taking the tool out of the cabinet</h2>
-<pre><code>git clone https://github.com/ShadowGuardAI/analyze-network-protocol-fuzzer
-./analyze-network-protocol-fuzzer [params]</code></pre>
-<p class="torn">Tag tied to this drawer: the usage line on its own names no target, port, or packet count. The parameters in the next drawer are not optional decoration; they are the whole of how a run is specified.</p>
-</section>
-<div class="tagstring"><i></i><i></i><i></i></div>
-<section class="drawer" id="controls"><h2>Third drawer: the controls, laid out as pinned specimens</h2>
-<p><code>-h</code>: Show help message and exit</p>
-<p id="c-t"><code>-t</code>: Target IP address or hostname.</p>
-<p id="c-p"><code>-p</code>: Target port number.</p>
-<p id="c-n"><code>-n</code>: Number of packets to send. Default: 100</p>
-<p id="c-s"><code>-s</code>: Size of each packet in bytes. Default: 100</p>
-<p id="c-f"><code>-f</code>: Fuzzing type: random, mutate, or overflow. Default: random</p>
-<p id="c-l"><code>-l</code>: Path to the log file. If not specified, logs will be printed to the console.</p>
-<p><code>-P</code>: No description provided in the source.</p>
-<p><code>-d</code>: No description provided in the source.</p>
-<p><code>-r</code>: No description provided in the source.</p>
-<p class="torn"><code>-m</code>: Mutation rate for [the phrase breaks off here in the README, with the object of the phrase missing].</p>
-<p class="torn"><code>-o</code>: Overflow amount for [the phrase breaks off here in the README, likewise unfinished].</p>
-<p>No wording is supplied on this page to complete either broken phrase.</p>
-<p><a class="pin" href="https://github.com/ShadowGuard-AI/analyze-network-protocol-fuzzer">The repository on GitHub</a></p>
-</section>
-<div class="tagstring"><i></i><i></i><i></i></div>
-<section class="drawer" id="outcome"><h2>Bottom drawer: what a run is shown to produce</h2>
-<p>The README documents sending the packets and, through <code>-l</code>, logging to a file or to the console. It gives no example target, no example command with values filled in, no sample log line, no crash report format, and no result summary.</p>
-<p>What counts as a found vulnerability or a crash is not described in the source, and this drawer lists those absences plainly rather than filling them in.</p>
-<p>Licence, the label on the cabinet door: Copyright (c) ShadowGuardAI, with no licence named, reproduced as written, unhyphenated as in the original.</p>
-</section>
+<h2>What it does</h2>
+<p>The fuzzer generates malformed packets and sends them at a target service, watching for the blow the service cannot take: a vulnerability or a crash. Usage, as the README gives it: <code>./analyze-network-protocol-fuzzer [params]</code>. Its one requirement is <code>pandas&gt;=2.0.0</code>.</p>
+<figure class="wide" style="padding:0;margin:18px 0;"><img src="assets/banner.png" alt="Long grey crash test hall with a white car standing on the marked run up lane facing the barrier at the far end, a grey dummy belted in the driver seat, one orange sensor disc on the car's flank and rows of ceiling lights reflected on the polished floor"></figure>
+<h2>Parameters</h2>
+<table>
+<tr><th>Parameter</th><th>What the README says</th></tr>
+<tr><td><code>-h</code></td><td>Show help message and exit</td></tr>
+<tr><td><code>-t</code></td><td>Target IP address or hostname</td></tr>
+<tr><td><code>-p</code></td><td>Target port number</td></tr>
+<tr><td><code>-P</code></td><td>No description provided</td></tr>
+<tr><td><code>-n</code></td><td>Number of packets to send. Default: 100</td></tr>
+<tr><td><code>-s</code></td><td>Size of each packet in bytes. Default: 100</td></tr>
+<tr><td><code>-d</code></td><td>No description provided</td></tr>
+<tr><td><code>-f</code></td><td>Fuzzing type: random, mutate, or overflow. Default: random</td></tr>
+<tr><td><code>-m</code></td><td>Mutation rate for </td></tr>
+<tr><td><code>-o</code></td><td>Overflow amount for </td></tr>
+<tr><td><code>-l</code></td><td>Path to the log file. If not specified, logs will be printed to the console</td></tr>
+<tr><td><code>-r</code></td><td>No description provided</td></tr>
+</table>
+<h2>Stated limits</h2>
+<div class="hold"><p>Two labels in the source are torn, and they are carried torn: <code>-m</code> is cut off at Mutation rate for and <code>-o</code> is cut off at Overflow amount for, each phrase missing the noun it was about to name, and <code>-P</code>, <code>-d</code>, and <code>-r</code> arrive with no description provided. None of the five is completed here by guess. The licence line at the close of the README is a copyright line only, with no licence named.</p></div>
 </main>
-<footer><p>Theme: The Butterfly Collector's Setting Board. Type: Averia Sans Libre for headings, Bitter for reading, both SIL Open Font License 1.1. Lettering reference Stasmic was reference only and is not embedded.</p></footer>
+<footer>analyze-network-protocol-fuzzer, struck and measured. Fonts: Sigmar One and Rubik, self-hosted under the SIL Open Font License.</footer>
 </body>
 </html>
