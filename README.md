@@ -1,13 +1,12 @@
-![A collectors bench at dawn: a setting board with one butterfly pinned flat under paper strips, a pin row in cork, forceps on a cloth, blank tags, and a half open glass topped drawer, with nothing that can be read](intro-banner.png)
+![The white car's front corner close up a breath after impact, the bumper folded against the concrete barrier around the orange sensor disc while the rest of the car stands undamaged behind it](intro-banner.png)
 
 # analyze-network-protocol-fuzzer
 
-The Butterfly Collector's Setting Board: a fragile structure held open under steady, recorded pressure until its final shape is known.
+![Long grey crash test hall with a white car standing on the marked run up lane facing the barrier at the far end, a grey dummy belted in the driver seat, one orange sensor disc on the car's flank and rows of ceiling lights reflected on the polished floor](banner.png)
 
-![A collectors bench at dawn with the main setting board in the foreground, the project name handwritten in Averia Sans Libre on a bone tag tied with string to the front edge of the bench](banner.png)
+<p align="center"><img src="logo.png" alt="Front view of a plain white test car drawn as a flat emblem with bold outlines, a grey test dummy belted behind its windscreen and one round orange impact sensor disc fixed at the centre of its front bumper" width="180"></p>
 
 ![Collectors bench scene: dawn light and lamp light trade strength while a highlight checks the pin row, the forceps, and the blank tag pile, and dust motes drift down](scene.svg)
-
 
 # analyze-network-protocol-fuzzer
 A command-line tool that fuzzes network protocols by generating and sending malformed packets to a target service to identify potential vulnerabilities or crashes. It sends random, mutated, or oversized random byte packets to a named target. - Focused on Data analysis and reporting
