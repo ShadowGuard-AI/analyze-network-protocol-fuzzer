@@ -7,9 +7,7 @@
 <p align="center"><img src="logo.png" alt="Front view of a plain white test car drawn as a flat emblem with bold outlines, a grey test dummy belted behind its windscreen and one round orange impact sensor disc fixed at the centre of its front bumper" width="180"></p>
 
 ![Collectors bench scene: dawn light and lamp light trade strength while a highlight checks the pin row, the forceps, and the blank tag pile, and dust motes drift down](scene.svg)
-
-# analyze-network-protocol-fuzzer
-A command-line tool that fuzzes network protocols by generating and sending malformed packets to a target service to identify potential vulnerabilities or crashes. It sends random, mutated, or oversized random byte packets to a named target. - Focused on Data analysis and reporting
+A command-line tool that fuzzes network protocols by generating and sending malformed packets to a target service to identify potential vulnerabilities or crashes. It sends random, mutated, or oversized random byte packets to a named target, focusing on automated data analysis and reporting
 
 
 ![Major section divider: a label tag string across the width with five blank tags hanging, the centre tag carrying a tag red spot](sep-heavy.svg)
